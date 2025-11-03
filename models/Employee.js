@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js";
 
-const employee = sequelize.define(
+const Employee = sequelize.define(
   "Employee",
   {
     id: {
@@ -99,4 +100,4 @@ const employee = sequelize.define(
   }
 );
 
-export default employee;
+export default Employee;
