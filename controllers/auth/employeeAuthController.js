@@ -15,9 +15,11 @@ const employeeAuthController = {
         return res.status(401).json({ error: "Incorrect password" });
       }
       req.session.employee = employee;
-      return res
-        .status(200)
-        .json({ message: "Login successful", employeeId: employee.id });
+      return res.status(200).json({
+        message: "Login successful",
+        employeeId: employee.id,
+        redirectUrl: "/admin/home",
+      });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ error: "Server error" });

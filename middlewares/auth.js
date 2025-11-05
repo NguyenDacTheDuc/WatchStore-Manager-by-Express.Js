@@ -2,6 +2,7 @@ export const isAuthenticated = (req, res, next) => {
   if (req.session && req.session.employee) {
     return next();
   }
+  console.log(req.session, req.session.path);
   return res.status(401).json({ error: "Unauthorized: Please login first" });
 };
 

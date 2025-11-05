@@ -8,8 +8,8 @@ const sequelize = new Sequelize(
   process.env.PASS_DB,
   {
     host: process.env.HOST_DB,
-    port: parseInt(process.env.PORT_DB),
-    dialect: "mysql",
+    port: process.env.PORT_DB,
+    dialect: process.env.DIALECT_DB,
     dialectOptions: {
       charset: "utf8mb4",
       collate: "utf8mb4_unicode_ci",
@@ -18,7 +18,6 @@ const sequelize = new Sequelize(
       charset: "utf8mb4",
       collate: "utf8mb4_unicode_ci",
     },
-    logging: false,
     timezone: "+07:00",
   }
 );
