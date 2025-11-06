@@ -89,11 +89,11 @@ const Employee = sequelize.define(
     timestamps: true,
     hooks: {
       beforeCreate: async (employee) => {
-        employee.password = await bcrypt.hash(employee.password, 4);
+        employee.password = await bcrypt.hash(employee.password, 10);
       },
       beforeUpdate: async (employee) => {
         if (employee.changed("password")) {
-          employee.password = await bcrypt.hash(employee.password, 4);
+          employee.password = await bcrypt.hash(employee.password, 10);
         }
       },
     },

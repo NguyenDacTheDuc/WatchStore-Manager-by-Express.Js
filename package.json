@@ -11,7 +11,6 @@
   "author": "NguyenDacTheDuc",
   "license": "ISC",
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.16",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
@@ -20,7 +19,6 @@
     "mysql2": "^3.15.3",
     "path": "^0.12.7",
     "sequelize": "^6.37.7",
-    "tailwindcss": "^4.1.16",
     "url": "^0.11.4"
   }
 }

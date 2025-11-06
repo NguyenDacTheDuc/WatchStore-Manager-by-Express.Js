@@ -78,11 +78,11 @@ const Customer = sequelize.define(
     timestamps: true,
     hooks: {
       beforeCreate: async (customer) => {
-        customer.pass = await bcrypt.hash(customer.pass, 2);
+        customer.pass = await bcrypt.hash(customer.pass, 10);
       },
       beforeUpdate: async (customer) => {
         if (customer.changed("pass")) {
-          customer.pass = await bcrypt.hash(customer.pass, 2);
+          customer.pass = await bcrypt.hash(customer.pass, 10);
         }
       },
     },
