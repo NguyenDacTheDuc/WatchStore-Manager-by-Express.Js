@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/database.js";
-import Employee from "./Employee.js";
-import Customer from "./Customer.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+import Employee from './Employee.js';
+import Customer from './Customer.js';
 
 const Order = sequelize.define(
-  "Order",
+  'Order',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -14,15 +14,15 @@ const Order = sequelize.define(
     employeeId: {
       type: DataTypes.INTEGER,
       validate: {
-        isInt: { msg: "Employee ID must be an integer" },
+        isInt: { msg: 'Employee ID must be an integer' },
       },
     },
     customerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notNull: { msg: "Customer is required" },
-        isInt: { msg: "Customer ID must be an integer" },
+        notNull: { msg: 'Customer is required' },
+        isInt: { msg: 'Customer ID must be an integer' },
       },
     },
     orderDate: {
@@ -30,37 +30,37 @@ const Order = sequelize.define(
       defaultValue: DataTypes.NOW,
       allowNull: false,
       validate: {
-        notNull: { msg: "Order date is required" },
-        isDate: { msg: "Order date must be a valid date" },
+        notNull: { msg: 'Order date is required' },
+        isDate: { msg: 'Order date must be a valid date' },
         isBefore: {
-          args: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
-          msg: "Order date cannot be in the future",
+          args: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+          msg: 'Order date cannot be in the future',
         },
       },
     },
     status: {
-      type: DataTypes.ENUM("pending", "confirmed", "shipping", "delivered"),
-      defaultValue: "pending",
+      type: DataTypes.ENUM('pending', 'confirmed', 'shipping', 'delivered'),
+      defaultValue: 'pending',
       allowNull: false,
       validate: {
-        notNull: { msg: "Order status is required" },
+        notNull: { msg: 'Order status is required' },
         isIn: {
-          args: [["pending", "confirmed", "shipping", "delivered"]],
-          msg: "Status must be: pending, confirmed, shipping, delivered, or cancelled",
+          args: [['pending', 'confirmed', 'shipping', 'delivered']],
+          msg: 'Status must be: pending, confirmed, shipping, delivered, or cancelled',
         },
       },
     },
   },
   {
-    tableName: "orders",
+    tableName: 'orders',
     timestamps: true,
   }
 );
 
-Employee.hasMany(Order, { foreignKey: "employeeId", onDelete: "set null" });
-Order.belongsTo(Employee, { foreignKey: "employeeId" });
+Employee.hasMany(Order, { foreignKey: 'employeeId', onDelete: 'set null' });
+Order.belongsTo(Employee, { foreignKey: 'employeeId' });
 
-Customer.hasMany(Order, { foreignKey: "customerId", onDelete: "cascade" });
-Order.belongsTo(Customer, { foreignKey: "customerId" });
+Customer.hasMany(Order, { foreignKey: 'customerId', onDelete: 'cascade' });
+Order.belongsTo(Customer, { foreignKey: 'customerId' });
 
 export default Order;

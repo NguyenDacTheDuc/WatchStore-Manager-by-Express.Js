@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import employeeRouter from './routers/employeeAuthRouter.js';
+import employeeRouter from './routers/employeeRouter.js';
 import session from 'express-session';
 
 dotenv.config();

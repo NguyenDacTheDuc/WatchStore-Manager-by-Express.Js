@@ -1,8 +1,8 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/database.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
 const Brand = sequelize.define(
-  "Brand",
+  'Brand',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -12,18 +12,18 @@ const Brand = sequelize.define(
     name: {
       type: DataTypes.STRING(20),
       allowNull: false,
-      unique: { msg: "This brand already exists" },
+      unique: { msg: 'Tên thương hiệu này đã tổn tại' },
       validate: {
-        notEmpty: { msg: "Brand name cannot be blank" },
+        notEmpty: { msg: 'Không được bỏ trống' },
         len: {
           args: [3, 20],
-          msg: "Brand name must be 3-20 characters",
+          msg: 'Tên thương hiệu phải từ 3 đến 20 kí tự',
         },
       },
     },
   },
   {
-    tableName: "brands",
+    tableName: 'brands',
   }
 );
 
