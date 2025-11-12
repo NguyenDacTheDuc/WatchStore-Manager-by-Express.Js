@@ -19,18 +19,58 @@
             Quản Lý Sản Phẩm
           </p>
         </div>
-        <div class="mt-[30px] ms-9">
+        <div class="mt-[30px] ms-9 flex justify-between">
           <button
             type="button"
             id="add"
-            class="me-8 text-xl bg-blue-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] mx-auto"
+            class="me-8 text-xl bg-blue-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]"
           >
             <i class="fa-solid fa-plus text-white"></i>
             Thêm
           </button>
+          <div class="flex pe-2">
+            <form
+              id="nameSearch"
+              action="/admin/product/name-search"
+              method="GET"
+            >
+              <input
+                type="text"
+                name="keyword"
+                placeholder="Nhập tên sản phẩm"
+                class="mx-auto bg-white-600 p-3 rounded-3xl w-[20vw]"
+                value="<%= typeof keyword !== 'undefined' ? keyword : '' %>"
+              />
+              <button
+                type="submit"
+                class="me-8 text-xl bg-green-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]"
+              >
+                <i class="fa-solid fa-search text-white"></i> Tìm
+              </button>
+            </form>
+            <form
+              id="brandSearch"
+              action="/admin/product/brand-search"
+              method="GET"
+            >
+              <input
+                type="text"
+                name="keyword"
+                placeholder="Nhập tên thương hiệu"
+                class="mx-auto bg-white-600 p-3 rounded-3xl"
+                value="<%= typeof keyword !== 'undefined' ? keyword : '' %>"
+              />
+              <button
+                type="submit"
+                class="me-8 text-xl bg-green-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]"
+              >
+                <i class="fa-solid fa-search text-white"></i> Tìm
+              </button>
+            </form>
+          </div>
         </div>
         <div>
-          <table class="w-[95%] text-center mx-auto">
+          <table class="w-[95%] text-center mx-auto mt-2">
             <tr class="bg-gray-800 text-white">
               <th class="py-3">STT</th>
               <th class="py-3">Hình ảnh</th>
@@ -44,17 +84,33 @@
             <% products.forEach((product, index) => { %>
             <tr class="bg-white hover:bg-gray-50 transition">
               <td class="px-4 py-2"><%= ++index %></td>
-              <td class="px-4 py-2"><%= product.pricture %></td>
+              <td class="px-4 py-2 w-[5vw]">
+                <img src="<%= product.picture %>" />
+              </td>
               <td class="px-4 py-2"><%= product.name %></td>
               <td class="px-4 py-2"><%= product.Brand.name %></td>
               <td class="px-4 py-2"><%= product.color %></td>
-              <td class="px-4 py-2"><%= product.unitPrice %></td>
+              <td class="px-4 py-2">
+                <%= product.unitPrice.toLocaleString() %>
+              </td>
               <td class="px-4 py-2"><%= product.quantity %></td>
-              <td class="flex justify-around py-2">
-                <button class="bg-yellow-500 px-7 py-1 rounded-full update">
+              <td class="flex justify-center py-2 mt-1 gap-4 items-center">
+                <button
+                  class="bg-sky-500 px-7 py-2 rounded-full show"
+                  data-id="<%= product.id %>"
+                >
+                  <i class="fas fa-eye"></i> Xem chi tiết
+                </button>
+                <button
+                  class="bg-yellow-500 px-7 py-2 mt-1 rounded-full update"
+                  data-id="<%= product.id %>"
+                >
                   <i class="fas fa-edit"></i> Sửa
                 </button>
-                <button class="bg-red-500 px-7 py-1 rounded-full delete">
+                <button
+                  class="bg-red-500 px-7 py-2 mt-1 rounded-full delete"
+                  data-id="<%= product.id %>"
+                >
                   <i class="fas fa-trash-can"></i> Xóa
                 </button>
               </td>
@@ -79,6 +135,37 @@
   <script>
     document.getElementById('add').addEventListener('click', (e) => {
       location.href = '/admin/product/new';
+    });
+    document.querySelectorAll('.show').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        let id = btn.dataset.id;
+        location.href = `/admin/product/${id}`;
+      });
+    });
+    document.querySelectorAll('.update').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        let id = btn.dataset.id;
+        location.href = `/admin/product/${id}/edit`;
+      });
+    });
+    document.querySelectorAll('.delete').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        const id = btn.dataset.id;
+        if (!confirm('Bạn có chắc muốn xóa không?')) return;
+        try {
+          const res = await fetch(`/admin/product/${id}`, {
+            method: 'DELETE',
+            credentials: 'same-origin',
+          });
+          if (res.ok) {
+            location.reload();
+          }
+        } catch (error) {
+          console.log(error);
+          document.getElementById('error').innerText =
+            'Không thể kết nối tới server';
+        }
+      });
     });
   </script>
 </html>

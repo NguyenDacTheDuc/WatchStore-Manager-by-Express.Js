@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import { DataTypes } from "sequelize";
-import sequelize from "../config/database.js";
+import bcrypt from 'bcrypt';
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
 const Customer = sequelize.define(
-  "Customer",
+  'Customer',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -14,50 +14,43 @@ const Customer = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Full name cannot be blank" },
+        notEmpty: { msg: 'Full name cannot be blank' },
         len: {
           args: [10, 100],
-          msg: "Full name must be 10-100 characters",
+          msg: 'Độ dài tên ít nhất 10 và nhiều nhất 100 kí tự',
         },
         is: {
-          args: /^[A-Za-zÀ-ỹ\s]+$/u,
-          msg: "Full name can only contain letters and spaces",
+          args: /^[a-zA-ZÀ-ỹ\s]+$/u,
+          msg: 'Tên chỉ được chứa chữ cái và khoảng trắng',
         },
       },
     },
     phone: {
       type: DataTypes.STRING(10),
       allowNull: false,
-      unique: { msg: "Phone number already exists" },
+      unique: { msg: 'Phone number already exists' },
       validate: {
         len: {
           args: [10, 10],
-          msg: "Phone number must be exactly 10 digits",
+          msg: 'Phone number must be exactly 10 digits',
         },
-        notEmpty: { msg: "Phone number cannot be blank" },
-        isNumeric: { msg: "Phone number must contain only numbers" },
+        notEmpty: { msg: 'Phone number cannot be blank' },
+        isNumeric: { msg: 'Phone number must contain only numbers' },
       },
     },
     address: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      validate: {
-        notEmpty: { msg: "Address cannot be blank" },
-        len: {
-          args: [6, 255],
-          msg: "Address must be 6-255 characters",
-        },
-      },
     },
     username: {
       type: DataTypes.STRING(50),
-      unique: { msg: "Username already exists" },
+      unique: { msg: 'Username already exists' },
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Username cannot be blank" },
+        notEmpty: { msg: 'Username cannot be blank' },
         len: {
           args: [6, 50],
-          msg: "Username must be 6-50 characters",
+          msg: 'Username must be 6-50 characters',
         },
       },
     },
@@ -65,24 +58,24 @@ const Customer = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Password cannot be blank" },
+        notEmpty: { msg: 'Password cannot be blank' },
         len: {
           args: [6, 100],
-          msg: "Password must be 6-100 characters",
+          msg: 'Password must be 6-100 characters',
         },
       },
     },
   },
   {
-    tableName: "customers",
+    tableName: 'customers',
     timestamps: true,
     hooks: {
       beforeCreate: async (customer) => {
-        customer.pass = await bcrypt.hash(customer.pass, 10);
+        customer.password = await bcrypt.hash(customer.password, 10);
       },
       beforeUpdate: async (customer) => {
-        if (customer.changed("pass")) {
-          customer.pass = await bcrypt.hash(customer.pass, 10);
+        if (customer.changed('password')) {
+          customer.password = await bcrypt.hash(customer.password, 10);
         }
       },
     },

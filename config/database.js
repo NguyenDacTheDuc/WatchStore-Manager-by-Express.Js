@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { Sequelize } from "sequelize";
+import dotenv from 'dotenv';
+import { Sequelize } from 'sequelize';
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -11,14 +11,13 @@ const sequelize = new Sequelize(
     port: process.env.PORT_DB,
     dialect: process.env.DIALECT_DB,
     dialectOptions: {
-      charset: "utf8mb4",
-      collate: "utf8mb4_unicode_ci",
+      charset: 'utf8mb4',
     },
     define: {
-      charset: "utf8mb4",
-      collate: "utf8mb4_unicode_ci",
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci',
     },
-    timezone: "+07:00",
+    timezone: '+07:00',
   }
 );
 

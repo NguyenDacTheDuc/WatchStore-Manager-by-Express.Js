@@ -18,13 +18,15 @@
       >
         <div>
           <p class="text-5xl font-bold text-white text-center pt-5">
-            Thêm Sản Phẩm
+            Sửa Sản Phẩm
           </p>
         </div>
         <div class="flex items-center h-full">
           <form
+            enctype="multipart/form-data"
             id="form"
             class="space-y-4 w-1/2 mx-auto bg-gray-600 p-10 rounded-3xl"
+            data-id="<%= product.id %>"
           >
             <div class="flex gap-3">
               <div class="flex-1">
@@ -36,6 +38,7 @@
                   type="text"
                   name="name"
                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%=product.name %>"
                 />
               </div>
               <div class="flex-2">
@@ -47,6 +50,7 @@
                   type="text"
                   name="color"
                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%=product.color %>"
                 />
               </div>
             </div>
@@ -60,6 +64,9 @@
                   id="brand"
                   class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 >
+                  <option value="<%=product.Brand.id  %>" selected>
+                    <%= product.Brand.name %>
+                  </option>
                   <option value="">-- Chọn thương hiệu --</option>
                   <% brands.forEach(brand => { %>
                   <option value="<%= brand.id %>"><%= brand.name %></option>
@@ -75,6 +82,9 @@
                   id="material"
                   class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 >
+                  <option value="<%=product.Material.id  %>" selected>
+                    <%= product.Material.name %>
+                  </option>
                   <option value="">-- Chọn chất liệu --</option>
                   <% materials.forEach(material => { %>
                   <option value="<%= material.id %>">
@@ -94,6 +104,9 @@
                   id="category"
                   class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 >
+                  <option value="<%=product.Category.id  %>" selected>
+                    <%= product.Category.name %>
+                  </option>
                   <option value="">-- Chọn thể loại --</option>
                   <% categories.forEach(category => { %>
                   <option value="<%= category.id %>">
@@ -104,13 +117,16 @@
               </div>
               <div class="flex-1">
                 <label class="block text-white font-medium mb-1">
-                  Nguồn gốc
+                  Xuất xứ
                 </label>
                 <select
                   name="originId"
                   id="origin"
                   class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 >
+                  <option value="<%=product.Origin.id  %>" selected>
+                    <%= product.Origin.name %>
+                  </option>
                   <option value="">-- Chọn xuất xứ --</option>
                   <% origins.forEach(origin => { %>
                   <option value="<%= origin.id %>"><%= origin.name %></option>
@@ -128,6 +144,7 @@
                   type="number"
                   name="unitPrice"
                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%= product.unitPrice %>"
                 />
               </div>
               <div class="flex-1">
@@ -139,19 +156,28 @@
                   type="number"
                   name="quantity"
                   class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%= product.quantity %>"
                 />
               </div>
               <div class="flex-1">
-                <label class="block text-white font-medium mb-1"
-                  >Ảnh sản phẩm</label
-                >
-                <input
-                  id="image"
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  class="w-full border rounded px-3 py-2 bg-white rounded-xl"
-                />
+                <label class="block text-white font-medium mb-1">
+                  Ảnh sản phẩm
+                </label>
+                <div class="flex gap-3">
+                  <img class="w-[60px] h-[50px]" src="<%= product.picture %>" />
+                  <input
+                    type="hidden"
+                    name="oldImage"
+                    value="<%= product.picture %>"
+                  />
+                  <input
+                    id="image"
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    class="w-full border rounded px-3 py-2 bg-white rounded-xl"
+                  />
+                </div>
               </div>
             </div>
             <div>
@@ -161,7 +187,9 @@
                 name="description"
                 rows="4"
                 class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              ></textarea>
+              >
+<%= product.description %></textarea
+              >
             </div>
             <div>
               <p
@@ -175,7 +203,7 @@
               class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]"
             >
               <i class="fa-solid fa-check mr-2"></i>
-              Thêm mới
+              Cập nhật
             </button>
           </form>
         </div>
@@ -184,8 +212,10 @@
     <footer><%- include("./footer.ejs") %></footer>
   </body>
   <script>
-    document.getElementById('form').addEventListener('submit', async (e) => {
+    let form = document.getElementById('form');
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      let id = form.dataset.id;
       let name = document.getElementById('name').value.trim();
       let color = document.getElementById('color').value.trim();
       let brandId = document.getElementById('brand').value;
@@ -236,9 +266,6 @@
         document.getElementById('error').innerText =
           'Bạn cần phải nhập số lượng lớn hơn 0';
         return;
-      } else if (!picture) {
-        document.getElementById('error').innerText = 'Bạn cần phải tải ảnh lên';
-        return;
       } else if (!description) {
         document.getElementById('error').innerText =
           'Bạn cần phải mô tả sản phẩm';
@@ -246,8 +273,8 @@
       }
       try {
         const data = new FormData(document.getElementById('form'));
-        const res = await fetch('/admin/product', {
-          method: 'POST',
+        const res = await fetch(`/admin/product/${id}`, {
+          method: 'PUT',
           credentials: 'same-origin',
           body: data,
         });

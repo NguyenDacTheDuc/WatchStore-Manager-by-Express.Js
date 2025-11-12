@@ -66,13 +66,12 @@ const Product = sequelize.define(
       allowNull: false,
       validate: {
         notEmpty: { msg: 'Color cannot be blank' },
-        isAlpha: { msg: 'Color must contain only letters' },
         len: {
-          args: [3, 10],
-          msg: 'Color must be 3-10 characters',
+          args: [2, 10],
+          msg: 'Color must be 2-10 characters',
         },
         is: {
-          args: /^[A-Za-z\s]+$/u,
+          args: /^[\p{L}\s]+$/u,
           msg: 'Color can only contain letters and spaces',
         },
       },
@@ -105,13 +104,6 @@ const Product = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: { msg: 'Picture filename already exists' },
-      validate: {
-        notEmpty: { msg: 'Picture filename cannot be blank' },
-        is: {
-          args: /^[A-Za-z0-9\-_\.]+\.(jpg|jpeg|png|webp)$/i,
-          msg: 'Picture must be a valid image file (jpg, jpeg, png, webp)',
-        },
-      },
     },
     description: {
       type: DataTypes.TEXT,
