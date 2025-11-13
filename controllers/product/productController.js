@@ -173,10 +173,10 @@ export const productController = {
         picture: '/uploads/' + picture.filename,
       });
       return res.status(201).json({ url: '/admin/product' });
-    } catch (error) {
-      console.error(error);
-      if (error.name === 'SequelizeValidationError') {
-        return res.status(400).json({ error: error.errors[0].message });
+    } catch (err) {
+      console.error(err);
+      if (err.name === 'SequelizeValidationError') {
+        return res.status(400).json({ error: err.errors[0].message });
       }
       return res.status(500).json({ error: 'Server error' });
     }

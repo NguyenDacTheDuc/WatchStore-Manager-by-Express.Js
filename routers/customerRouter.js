@@ -27,4 +27,9 @@ router.get('/:id/profile', checkSession, profileController.profile);
 router.post('/:id/change-password', checkSession, profileController.change);
 router.post('/:id/profile', checkSession, profileController.updateProfile);
 
+router.get('/brand/:id', checkSession, productController.getProductsByBrand);
+router.get('/category/:id', checkSession, productController.getProductsByCategory);
+router.get('/material/:id', checkSession, productController.getProductsByMaterial);
+router.get('/origin/:id', checkSession, productController.getProductsByOrigin);
+
 export default router;

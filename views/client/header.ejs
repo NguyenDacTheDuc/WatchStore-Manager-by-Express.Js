@@ -6,7 +6,7 @@
       <div class="dropdownMenu hidden absolute bg-white right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div class="py-1">
           <% brands.forEach((brand)=>{ %>
-          <a href="#" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= brand.name %></a>
+          <a href="/brand/<%= brand.id %>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= brand.name %></a>
           <% }) %>
         </div>
       </div>
@@ -16,7 +16,7 @@
       <div class="dropdownMenu hidden absolute bg-white right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div class="py-1">
           <% categories.forEach((category)=>{ %>
-          <a href="#" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= category.name %></a>
+          <a href="/category/<%= category.id%>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= category.name %></a>
           <% }) %>
         </div>
       </div>
@@ -26,7 +26,7 @@
       <div class="dropdownMenu hidden absolute bg-white right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div class="py-1">
           <% materials.forEach((material)=>{ %>
-          <a href="#" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= material.name %></a>
+          <a href="/material/<%= material.id %>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= material.name %></a>
           <% }) %>
         </div>
       </div>
@@ -36,7 +36,7 @@
       <div class="dropdownMenu bg-white hidden absolute right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div class="py-1">
           <% origins.forEach((origin)=>{ %>
-          <a href="#" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= origin.name %></a>
+          <a href="/origin/<%= origin.id %>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= origin.name %></a>
           <% }) %>
         </div>
       </div>
