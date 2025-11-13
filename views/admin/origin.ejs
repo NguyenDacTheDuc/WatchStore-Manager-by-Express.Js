@@ -5,27 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Origin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   </head>
   <body class="flex-col">
     <div class="flex">
       <nav class="w-1/8"><%- include("./nav.ejs") %></nav>
       <div class="flex-1 flex-col bg-[url('/picture/adminHome.png')] bg-cover">
         <div>
-          <p class="text-5xl font-bold text-white text-center pt-5">
-            Quản Lý Xuất Xứ
-          </p>
+          <p class="text-5xl font-bold text-white text-center pt-5">Quản Lý Xuất Xứ</p>
         </div>
         <div class="flex items-center mt-[30px] ms-11">
           <form id="form">
-            <button
-              type="button"
-              id="undisabled"
-              class="me-8 text-xl bg-blue-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] mx-auto"
-            >
+            <button type="button" id="undisabled" class="me-8 text-xl bg-blue-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02] mx-auto">
               <i class="fa-solid fa-plus text-white"></i>
               Thêm
             </button>
@@ -36,12 +27,7 @@
               placeholder="Tên xuất xứ"
               disabled
             />
-            <button
-              id="save"
-              type="submit"
-              class="text-xl bg-green-800 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform"
-              disabled
-            >
+            <button id="save" type="submit" class="text-xl bg-green-800 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform" disabled>
               <i class="fa-solid fa-check text-white"></i>
               Lưu
             </button>
@@ -63,19 +49,8 @@
               <td class="px-4 py-2"><%= ++index %></td>
               <td class="px-4 py-2 w-1/2"><%= origin.name %></td>
               <td class="flex justify-around py-2">
-                <button
-                  class="bg-yellow-500 px-7 py-1 rounded-full update"
-                  data-id="<%= origin.id %>"
-                  data-name="<%= origin.name %>"
-                >
-                  <i class="fas fa-edit"></i> Sửa
-                </button>
-                <button
-                  class="bg-red-500 px-7 py-1 rounded-full delete"
-                  data-id="<%= origin.id %>"
-                >
-                  <i class="fas fa-trash-can"></i> Xóa
-                </button>
+                <button class="bg-yellow-500 px-7 py-1 rounded-full update" data-id="<%= origin.id %>" data-name="<%= origin.name %>"><i class="fas fa-edit"></i> Sửa</button>
+                <button class="bg-red-500 px-7 py-1 rounded-full delete" data-id="<%= origin.id %>"><i class="fas fa-trash-can"></i> Xóa</button>
               </td>
             </tr>
             <% }) %>
@@ -83,10 +58,7 @@
         </div>
         <div class="flex justify-center mt-6">
           <% for (let i = 1; i <= totalPages; i++) { %>
-          <a
-            href="?page=<%= i %>"
-            class="mx-1 px-3 py-1 rounded-lg <%= currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white transition' %>"
-          >
+          <a href="?page=<%= i %>" class="mx-1 px-3 py-1 rounded-lg <%= currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white transition' %>">
             <%= i %>
           </a>
           <% } %>
@@ -130,8 +102,7 @@
         }
       } catch (error) {
         console.log(error);
-        document.getElementById('error').innerText =
-          'Không thể kết nối tới server';
+        document.getElementById('error').innerText = 'Không thể kết nối tới server';
       }
     });
     document.querySelectorAll('.update').forEach((btn) => {
@@ -158,8 +129,7 @@
           }
         } catch (error) {
           console.log(error);
-          document.getElementById('error').innerText =
-            'Không thể kết nối tới server';
+          document.getElementById('error').innerText = 'Không thể kết nối tới server';
         }
       });
     });

@@ -27,18 +27,14 @@ router.get('/forget-password', (req, res) => {
 });
 router.post('/forget-password', employeeAuthController.resetPassword);
 
-router.get('/home', checkSession, (req, res) => {
+router.get('/dashboard', checkSession, (req, res) => {
   res.render('admin/home');
 });
 
 router.get('/:id/change-password', checkSession, (req, res) => {
   res.render('admin/changePassword');
 });
-router.post(
-  '/:id/change-password',
-  checkSession,
-  employeeAuthController.changePassword
-);
+router.post('/:id/change-password', checkSession, employeeAuthController.changePassword);
 
 router.get('/brand', checkSession, brandController.list);
 router.post('/brand', checkSession, brandController.create);
@@ -79,9 +75,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|webp/;
-  const extName = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
+  const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimeType = allowedTypes.test(file.mimetype);
   if (extName && mimeType) {
     cb(null, true);
@@ -94,26 +88,12 @@ const upload = multer({ storage, fileFilter });
 router.get('/product', checkSession, productController.list);
 router.get('/product/new', checkSession, productController.new);
 router.get('/product/name-search', checkSession, productController.nameSearch);
-router.get(
-  '/product/brand-search',
-  checkSession,
-  productController.brandSearch
-);
+router.get('/product/brand-search', checkSession, productController.brandSearch);
 router.get('/product/:id/', checkSession, productController.show);
 router.get('/product/:id/edit', checkSession, productController.edit);
 
-router.post(
-  '/product',
-  checkSession,
-  upload.single('image'),
-  productController.create
-);
-router.put(
-  '/product/:id',
-  checkSession,
-  upload.single('image'),
-  productController.update
-);
+router.post('/product', checkSession, upload.single('image'), productController.create);
+router.put('/product/:id', checkSession, upload.single('image'), productController.update);
 router.delete('/product/:id', checkSession, productController.delete);
 
 router.get('/customer', checkSession, customerController.list);

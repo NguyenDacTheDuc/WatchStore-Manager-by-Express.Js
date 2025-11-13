@@ -192,9 +192,7 @@ export const productController = {
     const originId = parseInt(req.body.originId);
     const unitPrice = parseFloat(req.body.unitPrice);
     const quantity = parseInt(req.body.quantity);
-    const picture = req.file
-      ? '/uploads/' + req.file.filename
-      : req.body.oldImage;
+    const picture = req.file ? '/uploads/' + req.file.filename : req.body.oldImage;
     const description = req.body.description;
     try {
       let product = await Product.findOne({

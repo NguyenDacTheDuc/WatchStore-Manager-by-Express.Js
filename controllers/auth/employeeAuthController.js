@@ -8,9 +8,7 @@ const employeeAuthController = {
     try {
       let employee = await Employee.findOne({ where: { username: username } });
       if (!employee) {
-        return res
-          .status(401)
-          .json({ error: 'Tài khoảng của bạn không tồn tại' });
+        return res.status(401).json({ error: 'Tài khoảng của bạn không tồn tại' });
       }
       let passwordcheck = await bcrypt.compare(password, employee.password);
       if (!passwordcheck) {
@@ -18,7 +16,7 @@ const employeeAuthController = {
       }
       req.session.employee = employee;
       return res.status(200).json({
-        redirectUrl: '/admin/home',
+        redirectUrl: '/admin/dashboard',
       });
     } catch (err) {
       console.error(err);
