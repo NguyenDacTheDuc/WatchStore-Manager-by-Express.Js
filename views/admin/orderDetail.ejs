@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body class="flex-col">
+    <div class="flex">
+      <nav class="w-1/8"><%- include("./nav.ejs") %></nav>
+      <div class="flex-1 flex-col bg-[url('/picture/adminHome.png')] bg-cover">
+        <div>
+          <p class="text-5xl font-bold text-white text-center pt-5">Chi tiết đơn hàng <%= id %></p>
+        </div>
+        <div class="mt-[50px]">
+          <table class="w-[95%] text-center mx-auto mt-2">
+            <tr class="bg-gray-800 text-white">
+              <th class="py-3">STT</th>
+              <th class="py-3">Hình ảnh</th>
+              <th class="py-3">Tên sản phẩm</th>
+              <th class="py-3">Đơn giá</th>
+              <th class="py-3">Số lượng</th>
+              <th class="py-3">Số tiền</th>
+            </tr>
+            <% orderDetails.forEach((item, index) => { %>
+            <tr class="bg-white hover:bg-gray-50 transition">
+              <td class="px-4 py-2"><%= ++index %></td>
+              <td class="px-4 py-2 w-[5vw]"><img src="<%= item.Product.picture %>" /></td>
+              <td class="px-4 py-2"><%= item.Product.name %></td>
+              <td class="px-4 py-2"><%= item.Product.unitPrice %></td>
+              <td class="px-4 py-2"><%= item.quantity %></td>
+              <td class="px-4 py-2"><%= item.Product.unitPrice* item.quantity %></td>
+            </tr>
+            <% }) %>
+          </table>
+        </div>
+        <div class="flex justify-center mt-6">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="mx-1 px-3 py-1 rounded-lg <%= currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white transition' %>">
+            <%= i %>
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+</html>

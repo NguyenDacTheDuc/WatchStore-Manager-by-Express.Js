@@ -31,11 +31,11 @@ export const productController = {
   },
 
   nameSearch: async (req, res) => {
+    const keyword = req.query.keyword ? req.query.keyword.trim() : '';
     try {
       const page = parseInt(req.query.page) || 1;
       const limit = 10;
       const offset = (page - 1) * limit;
-      const keyword = req.query.keyword ? req.query.keyword.trim() : '';
       const { count, rows } = await Product.findAndCountAll({
         where: { name: { [Op.like]: `%${keyword}%` } },
         include: [Brand, Category, Material, Origin],

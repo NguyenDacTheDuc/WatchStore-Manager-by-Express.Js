@@ -12,6 +12,7 @@ import { originController } from '../controllers/origin/originController.js';
 import { productController } from '../controllers/product/productController.js';
 import { customerController } from '../controllers/customer/customerControll.js';
 import { employeeController } from '../controllers/employee/employeeController.js';
+import { orderController } from '../controllers/order/orderController.js';
 
 const router = express.Router();
 
@@ -111,5 +112,9 @@ router.get('/employee/:id/edit', checkSession, employeeController.edit);
 router.post('/employee', checkSession, employeeController.create);
 router.put('/employee/:id', checkSession, employeeController.update);
 router.delete('/employee/:id', checkSession, employeeController.delete);
+
+router.get('/order', checkSession, orderController.list);
+router.get('/order/:id', checkSession, orderController.show);
+router.post('/order/confirm', checkSession, orderController.confirm);
 
 export default router;

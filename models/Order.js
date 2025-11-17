@@ -50,6 +50,14 @@ const Order = sequelize.define(
         },
       },
     },
+    totalAmount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'Total amount is required' },
+        isInt: { msg: 'Total amount must be an integer' },
+      },
+    },
   },
   {
     tableName: 'orders',
