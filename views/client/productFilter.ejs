@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang chủ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+    <header><%- include("./header.ejs") %></header>
+    <main>
+      <div class="text-white bg-[url('https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=1920&q=80')] bg-cover py-20 pl-14">
+        <div class="w-1/2 space-y-6">
+          <p class="text-7xl font-bold leading-tight">HÃY TÌM ĐỒNG HỒ PHỤ HỢP VỚI PHONG CÁCH CỦA BẠN</p>
+          <p class="text-2xl">Duyệt qua nhiều mẫu đồng hồ được chế tác tỉ mỉ của chúng tôi, được thiết kế để tôn lên cá tính và đáp ứng phong cách của bạn.</p>
+          <a href="#product-list" class="inline-block bg-black text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 transition transform hover:scale-105"> Shop Now </a>
+          <div class="flex pt-5 gap-10 text-xl">
+            <p><span class="text-5xl font-bold"><%= brands.length %>+</span> <br />Thương hiệu quốc tế</p>
+            <p><span class="text-5xl font-bold"><%= products.length %>+</span> <br />Sản phẩm chất lượng cao</p>
+            <p><span class="text-5xl font-bold"><%= customers.length %>+ </span><br />Khách hàng hài lòng</p>
+          </div>
+        </div>
+      </div>
+      <div id="product-list">
+        <div id="filter" class="px-14 pt-5 flex items-center text-lg">
+          <form id="nameSearch" action="/home/name-search" method="GET">
+            <label class="font-semibold">Nhập tên sản phầm cần tìm:</label>
+            <input
+              type="text"
+              name="keyword"
+              placeholder="Nhập tên sản phẩm"
+              class="border mx-auto bg-white-600 p-3 rounded-3xl w-[20vw]"
+              value="<%= typeof keyword !== 'undefined' ? keyword : '' %>"
+            />
+            <button type="submit" class="me-20 text-lg bg-gray-400 hover:bg-green-600 text-white font-semibold py-1 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">
+              <i class="fa-solid fa-search text-white"></i> Tìm
+            </button>
+          </form>
+          <span class="text-lg font-semibold me-4">Lọc theo giá:</span>
+          <input type="radio" name="price" id="price-desc" value="desc" />
+          <label for="price-desc" class="me-4 ms-2">Giảm dần</label>
+          <input type="radio" name="price" id="price-asc" value="asc" />
+          <label for="price-asc" class="me-4 ms-2">Tăng dần</label>
+        </div>
+        <div class="grid grid-cols-4 gap-7 px-14 py-10">
+          <% products.forEach((product) => { %>
+          <div class="bg-white rounded-lg border overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <img src="<%= product.picture %>" class="w-full h-64 object-cover" />
+            <div class="p-4">
+              <h3 class="text-lg font-semibold mb-2"><%= product.name %></h3>
+              <p class="text-gray-600 mb-4"><%= product.Brand.name %></p>
+              <p class="text-blue-600 font-bold text-xl"><%= product.unitPrice.toLocaleString() %> VND</p>
+              <a href="/product/<%= product.id %>" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Xem Chi Tiết</a>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <div class="flex justify-center my-6">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="mx-1 px-3 py-1 rounded-lg <%= currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white transition' %>">
+            <%= i %>
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </main>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+  <script></script>
+</html>

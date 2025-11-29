@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang chủ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+    <header><%- include("./header.ejs") %></header>
+    <main>
+      <div>
+        <p class="text-center mt-8 font-bold text-3xl">Các đơn hàng mà bạn đã mua</p>
+      </div>
+      <div class="mt-12 mb-14">
+        <table class="w-[95%] text-center mx-auto mt-2">
+          <tr class="bg-gray-800 text-white">
+            <th class="py-3">STT</th>
+            <th class="py-3">Mã đơn hàng</th>
+            <th class="py-3">Nhân viên duyệt</th>
+            <th class="py-3">Ngày đặt</th>
+            <th class="py-3">Tổng tiền</th>
+            <th class="py-3">Trạng thái</th>
+          </tr>
+          <% orders.forEach((order, index) => { %>
+          <tr class="bg-white hover:bg-gray-200 transition">
+            <td class="px-4 py-2"><%= ++index %></td>
+            <td class="px-4 py-2"><%= order.id %></td>
+            <td class="px-4 py-2"><%= order.Employee ? order.Employee.name : 'Chưa duyệt'%></td>
+            <td class="px-4 py-2"><%= order.orderDate.toLocaleDateString('vi-VN') %></td>
+            <td class="px-4 py-2"><%= order.totalAmount %></td>
+            <td class="px-4 py-2"><%= order.status === "pending" ? "Đang chờ" : "Đã xác nhận" %></td>
+          </tr>
+          <% }) %>
+        </table>
+      </div>
+    </main>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+  <script></script>
+</html>

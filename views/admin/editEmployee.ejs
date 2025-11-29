@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body class="flex flex-col">
+    <div class="flex">
+      <nav class="w-1/8"><%- include("./nav.ejs") %></nav>
+      <div class="flex flex-1 flex-col bg-[url('/picture/adminHome.png')] bg-cover">
+        <div>
+          <p class="text-5xl font-bold text-white text-center pt-5">Sửa Thông Tin Nhân viên</p>
+        </div>
+        <div class="flex items-center h-full">
+          <form id="form" class="space-y-4 w-1/2 mx-auto bg-gray-600 p-10 rounded-3xl">
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Tên khách hàng </label>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%= employee.name %>"
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Số điện thoại </label>
+                <input
+                  id="phone"
+                  type="text"
+                  name="phone"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%= employee.phone %>"
+                />
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Tên tài khoản </label>
+                <input
+                  id="username"
+                  type="text"
+                  name="username"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value="<%= employee.username %>"
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Địa chỉ </label>
+                <select id="address" class="text-center w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="<%= employee.address %>" selected><%= employee.address %></option>
+                </select>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Mật khẩu </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="K điền nếu k muốn thay đổi mật khẩu"
+                />
+              </div>
+              <div class="flex-1 mt-7">
+                <button
+                  id="btn"
+                  data-id="<%= employee.id %>"
+                  type="submit"
+                  class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]"
+                >
+                  <i class="fa-solid fa-check mr-2"></i>
+                  Cập nhật
+                </button>
+              </div>
+            </div>
+            <div>
+              <p id="error" class="text-center font-medium" style="color: red"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+  <script>
+    const address = [
+      'An Giang',
+      'Bắc Ninh',
+      'Cà Mau',
+      'Cao Bằng',
+      'Cần Thơ',
+      'Đà Nẵng',
+      'Đắk Lắk',
+      'Điện Biên',
+      'Đồng Nai',
+      'Đồng Tháp',
+      'Gia Lai',
+      'Hà Nội',
+      'Hà Tĩnh',
+      'Hải Phòng',
+      'Huế',
+      'Hưng Yên',
+      'Khánh Hòa',
+      'Lai Châu',
+      'Lâm Đồng',
+      'Lạng Sơn',
+      'Lào Cai',
+      'Nghệ An',
+      'Ninh Bình',
+      'Phú Thọ',
+      'Quảng Ngãi',
+      'Quảng Ninh',
+      'Quảng Trị',
+      'Sơn La',
+      'Tây Ninh',
+      'Thái Nguyên',
+      'Thanh Hóa',
+      'Hồ Chí Minh City',
+      'Tuyên Quang',
+      'Vĩnh Long',
+    ];
+    address.forEach((v) => {
+      let option = document.createElement('option');
+      option.value = v;
+      option.text = v;
+      document.getElementById('address').appendChild(option);
+    });
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let id = document.getElementById('btn').dataset.id;
+      let name = document.getElementById('name').value.trim();
+      let phone = document.getElementById('phone').value.trim();
+      let username = document.getElementById('username').value.trim();
+      let password = document.getElementById('password').value;
+      let address = document.getElementById('address').value;
+      if (!name) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập tên nhân viên';
+        return;
+      } else if (!phone) {
+        document.getElementById('error').innerText = 'Bạn cần nhập số điện thoại';
+        return;
+      } else if (phone.length !== 10) {
+        document.getElementById('error').innerText = 'Số điện thoại phải đúng 10 số';
+        return;
+      } else if (!/^\d+$/.test(phone)) {
+        document.getElementById('error').innerText = 'Số điện thoại chỉ được chứa chữ số';
+        return;
+      } else if (!username) {
+        document.getElementById('error').innerText = 'Bạn cần phải điền tên tài khoản';
+        return;
+      } else if (username.includes(' ')) {
+        document.getElementById('error').innerText = 'Tên tài khoảng không được có khoảng trắng';
+        return;
+      } else if (!address) {
+        document.getElementById('error').innerText = 'Bạn cần phải chọn tỉnh thành';
+        return;
+      }
+      try {
+        const res = await fetch(`/admin/employee/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ name, phone, username, password, address }),
+        });
+        const result = await res.json();
+        if (res.ok) {
+          location.href = result.url;
+        } else {
+          document.getElementById('error').innerText = result.error;
+        }
+      } catch (error) {
+        console.log(error);
+        document.getElementById('error').innerText = 'Không thể kết nối tới server';
+      }
+    });
+  </script>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body class="flex flex-col">
+    <div class="flex">
+      <nav class="w-1/8"><%- include("./nav.ejs") %></nav>
+      <div class="flex flex-1 flex-col bg-[url('/picture/adminHome.png')] bg-cover">
+        <div>
+          <p class="text-5xl font-bold text-white text-center pt-5">Thêm Sản Phẩm</p>
+        </div>
+        <div class="flex items-center h-full">
+          <form id="form" class="space-y-4 w-1/2 mx-auto bg-gray-600 p-10 rounded-3xl">
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Tên sản phẩm </label>
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+              </div>
+              <div class="flex-2">
+                <label class="block text-white font-medium mb-1"> Màu sắc </label>
+                <input
+                  id="color"
+                  type="text"
+                  name="color"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Thương hiệu </label>
+                <select
+                  name="brandId"
+                  id="brand"
+                  class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <option value="">-- Chọn thương hiệu --</option>
+                  <% brands.forEach(brand => { %>
+                  <option value="<%= brand.id %>"><%= brand.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Chất liệu </label>
+                <select
+                  name="materialId"
+                  id="material"
+                  class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <option value="">-- Chọn chất liệu --</option>
+                  <% materials.forEach(material => { %>
+                  <option value="<%= material.id %>"><%= material.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Thể loại </label>
+                <select
+                  name="categoryId"
+                  id="category"
+                  class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <option value="">-- Chọn thể loại --</option>
+                  <% categories.forEach(category => { %>
+                  <option value="<%= category.id %>"><%= category.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Nguồn gốc </label>
+                <select
+                  name="originId"
+                  id="origin"
+                  class="w-full text-center border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                >
+                  <option value="">-- Chọn xuất xứ --</option>
+                  <% origins.forEach(origin => { %>
+                  <option value="<%= origin.id %>"><%= origin.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Đơn giá </label>
+                <input
+                  id="price"
+                  type="number"
+                  name="unitPrice"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1"> Số lượng </label>
+                <input
+                  id="quantity"
+                  type="number"
+                  name="quantity"
+                  class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-white font-medium mb-1">Ảnh sản phẩm</label>
+                <input id="image" type="file" name="image" accept="image/*" class="w-full border rounded px-3 py-2 bg-white rounded-xl" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-white font-medium mb-1">Mô tả</label>
+              <textarea id="description" name="description" rows="4" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            </div>
+            <div>
+              <p id="error" class="text-center font-medium" style="color: red"></p>
+            </div>
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">
+              <i class="fa-solid fa-check mr-2"></i>
+              Thêm mới
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+  <script>
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let name = document.getElementById('name').value.trim();
+      let color = document.getElementById('color').value.trim();
+      let brandId = document.getElementById('brand').value;
+      let materialId = document.getElementById('material').value;
+      let categoryId = document.getElementById('category').value;
+      let originId = document.getElementById('origin').value;
+      let price = parseFloat(document.getElementById('price').value);
+      let quantity = parseInt(document.getElementById('quantity').value);
+      let picture = document.getElementById('image').files[0];
+      let description = document.getElementById('description').value.trim();
+      if (!name) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập tên sản phẩm';
+        return;
+      } else if (!color) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập màu sắc';
+        return;
+      } else if (!brandId) {
+        document.getElementById('error').innerText = 'Bạn cần phải chọn thương hiệu';
+        return;
+      } else if (!materialId) {
+        document.getElementById('error').innerText = 'Bạn cần phải chọn chất liệu';
+        return;
+      } else if (!categoryId) {
+        document.getElementById('error').innerText = 'Bạn cần phải chọn thể loại';
+        return;
+      } else if (!originId) {
+        document.getElementById('error').innerText = 'Bạn cần phải chọn nơi xuất xứ';
+        return;
+      } else if (!price) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập đơn giá';
+        return;
+      } else if (price < 100000) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập đơn giá lớn hơn 100000';
+        return;
+      } else if (!quantity) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập số lượng';
+        return;
+      } else if (quantity < 1) {
+        document.getElementById('error').innerText = 'Bạn cần phải nhập số lượng lớn hơn 0';
+        return;
+      } else if (!picture) {
+        document.getElementById('error').innerText = 'Bạn cần phải tải ảnh lên';
+        return;
+      } else if (!description) {
+        document.getElementById('error').innerText = 'Bạn cần phải mô tả sản phẩm';
+        return;
+      }
+      try {
+        const data = new FormData(document.getElementById('form'));
+        const res = await fetch('/admin/product', {
+          method: 'POST',
+          credentials: 'same-origin',
+          body: data,
+        });
+        const result = await res.json();
+        if (res.ok) {
+          location.href = result.url;
+        } else {
+          document.getElementById('error').innerText = result.error;
+        }
+      } catch (error) {
+        console.log(error);
+        document.getElementById('error').innerText = 'Không thể kết nối tới server';
+      }
+    });
+  </script>
+</html>

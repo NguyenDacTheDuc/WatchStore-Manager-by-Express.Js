@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giỏ hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+    <header><%- include("./header.ejs") %></header>
+    <main>
+      <p class="mt-5 text-3xl font-bold text-center">Giỏ hàng của bạn</p>
+      <table class="min-w-full border mt-5 mb-3 text-center text-lg font-semibold">
+        <% let totalAmount=0 %>
+        <tr>
+          <th>Sản Phẩm</th>
+          <th>Đơn Giá</th>
+          <th>Số Lượng</th>
+          <th>Số Tiền</th>
+          <th>Thao Tác</th>
+        </tr>
+        <% cart.forEach(item => {%>
+        <tr>
+          <td class="p-2">
+            <div class="flex items-center">
+              <img src="<%= item.Product.picture %>" class="w-20 h-20 object-cover rounded" />
+              <p class="flex-1"><%= item.Product.name %></p>
+            </div>
+          </td>
+          <td class="unit-price"><%= item.Product.unitPrice %></td>
+          <td>
+            <div class="quantity-box flex items-center justify-center gap-2">
+              <button type="button" data-id="<%= item.id %>" class="minusBtn w-[30px] bg-gray-600 text-white pb-1">-</button>
+              <input type="number" class="quantityInput w-[35px] text-center" value="<%= item.quantity %>" min="1" max="<%= item.Product.quantity %>" readonly />
+              <button type="button" data-id="<%= item.id %>" class="plusBtn w-[30px] bg-gray-600 text-white pb-1">+</button>
+            </div>
+          </td>
+          <td class="total-price"><%= item.Product.unitPrice * item.quantity %></td>
+          <td><button data-id="<%= item.id %>" class="del text-red-600 hover:text-red-800">Xóa</button></td>
+        </tr>
+        <% totalAmount += item.Product.unitPrice * item.quantity; }); %>
+      </table>
+      <div class="h-8">
+        <p id="error" class="text-red-500 font-semibold text-center"></p>
+      </div>
+      <div class="flex pl-5 items-center gap-4 mb-5">
+        <p class="text-4xl font-bold text-green-500">Tổng tiền: <%= totalAmount.toLocaleString() %> VND</p>
+        <button id="pay" class="text-3xl rounded-full font-bold bg-red-500 px-6 py-2 hover:bg-red-700">Thanh toán</button>
+      </div>
+    </main>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+  <script>
+    const rows = document.querySelectorAll('tbody tr');
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const minusBtn = row.querySelector('.minusBtn');
+      const plusBtn = row.querySelector('.plusBtn');
+      const quantityInput = row.querySelector('.quantityInput');
+      const customerId = '<%= customer.id %>';
+      plusBtn.addEventListener('click', async () => {
+        const id = plusBtn.dataset.id;
+        const input = row.querySelector('.quantityInput');
+        const maxQty = parseInt(input.max);
+        const currentQty = parseInt(input.value);
+
+        if (currentQty >= maxQty) {
+          document.getElementById('error').innerText = `Bạn đã chọn hết số lượng sản phẩm shop hiện có!`;
+          return;
+        }
+
+        try {
+          const res = await fetch(`/cart/${id}/increase`, {
+            method: 'GET',
+          });
+
+          if (res.ok) {
+            location.reload();
+          } else {
+            const data = await res.json();
+            document.getElementById('error').innerText = data.error || 'Không thể tăng sản phẩm';
+          }
+        } catch (error) {
+          console.error(error);
+          document.getElementById('error').innerText = 'Server đang gặp sự cố.';
+        }
+      });
+
+      minusBtn.addEventListener('click', async () => {
+        const id = minusBtn.dataset.id;
+        const customerId = '<%= customer.id %>';
+        const currentQty = Number(quantityInput.value);
+        if (currentQty > 1) {
+          try {
+            const res = await fetch(`/cart/${id}/decrease`, {
+              method: 'GET',
+            });
+
+            if (res.ok) {
+              location.reload();
+            } else {
+              document.getElementById('error').innerText = 'Không thể giảm sản phẩm';
+            }
+          } catch (error) {
+            console.error(error);
+            document.getElementById('error').innerText = 'Server đang gặp sự cố. Vui lòng thử lại sau.';
+          }
+        }
+      });
+    }
+
+    document.querySelectorAll('.del').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        try {
+          const res = await fetch(`/cart/${id}`, { method: 'DELETE' });
+          if (res.ok) {
+            location.reload();
+          }
+        } catch (error) {
+          document.getElementById('error').innerText = 'Server đang gặp sự cố. Vui lòng thử lại sau.';
+        }
+      });
+    });
+
+    document.getElementById('pay').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/cart/pay', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const result = await res.json();
+        if (res.ok) {
+          alert('Hãy theo dõi đơn và thanh toán tiền mặt khi nhận hàng');
+          location.href = '/home';
+        } else {
+          document.getElementById('error').innerText = result.error;
+        }
+      } catch (error) {
+        document.getElementById('error').innerText = 'Server đang gặp sự cố. Vui lòng thử lại sau.';
+      }
+    });
+  </script>
+</html>

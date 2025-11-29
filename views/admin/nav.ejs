@@ -1,0 +1,56 @@
+<nav class="flex-col text-white bg-gray-600 pb-5">
+  <div class="flex-col">
+    <i class="block fa-solid fa-user-tie text-center text-9xl text-sky-400 pt-5"></i>
+    <p class="text-2xl font-bold text-center mt-2 mb-4 mx-2 max-w-[200px]"><%= employee.name %></p>
+  </div>
+  <ul class="h-[60vh]">
+    <li>
+      <a href="/admin/<%= employee.id %>/change-password" class="block px-6 py-3 hover:bg-gray-700 transition">🔒 Đổi mật khẩu</a>
+    </li>
+    <li>
+      <a href="/admin/brand" class="block px-6 py-3 hover:bg-gray-700 transition">🏷️ Thương hiệu</a>
+    </li>
+    <li>
+      <a href="/admin/origin" class="block px-6 py-3 hover:bg-gray-700 transition">🌍 Xuất xứ</a>
+    </li>
+    <li>
+      <a href="/admin/category" class="block px-6 py-3 hover:bg-gray-700 transition">📂 Thể loại</a>
+    </li>
+    <li>
+      <a href="/admin/material" class="block px-6 py-3 hover:bg-gray-700 transition">⚙️ Chất liệu</a>
+    </li>
+    <li>
+      <a href="/admin/product" class="block px-6 py-3 hover:bg-gray-700 transition">⌚ Sản phẩm</a>
+    </li>
+    <li>
+      <a href="/admin/customer" class="block px-6 py-3 hover:bg-gray-700 transition">👥 Khách hàng</a>
+    </li>
+    <li>
+      <a href="/admin/order" class="block px-6 py-3 hover:bg-gray-700 transition">🛒 Duyệt đơn hàng</a>
+    </li>
+    <div>
+      <% if(employee.role !== 'employee'){ %>
+      <li>
+        <a href="/admin/employee" class="block px-6 py-3 hover:bg-gray-700 transition">💼 Nhân viên</a>
+      </li>
+      <li>
+        <a href="/admin/statistic" class="block px-6 py-3 hover:bg-gray-700 transition">📊 Thống kê</a>
+      </li>
+      <% } %>
+    </div>
+  </ul>
+  <div>
+    <button id="logout" class="mt-10 border rounded-3xl mx-auto block font-bold bg-red-600 min-w-[180px] text-2xl py-1 hover:shadow-[0_0_25px_5px_rgba(255,0,0,0.9)]">
+      <i class="fa-solid fa-right-from-bracket mr-2"></i>Đăng xuất
+    </button>
+  </div>
+</nav>
+<script>
+  document.getElementById('logout').addEventListener('click', async (e) => {
+    const res = await fetch('/admin/logout', { method: 'POST' });
+    const result = await res.json();
+    if (res.ok) {
+      location.href = result.redirectUrl;
+    }
+  });
+</script>

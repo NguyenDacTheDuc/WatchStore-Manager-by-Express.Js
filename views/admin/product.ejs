@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body class="flex-col">
+    <div class="flex">
+      <nav class="w-1/8"><%- include("./nav.ejs") %></nav>
+      <div class="flex-1 flex-col bg-[url('/picture/adminHome.png')] bg-cover">
+        <div>
+          <p class="text-5xl font-bold text-white text-center pt-5">Quản Lý Sản Phẩm</p>
+        </div>
+        <div class="mt-[30px] ms-9 flex justify-between">
+          <button type="button" id="add" class="me-8 text-xl bg-blue-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">
+            <i class="fa-solid fa-plus text-white"></i>
+            Thêm
+          </button>
+          <div class="flex pe-2">
+            <form id="nameSearch" action="/admin/product/name-search" method="GET">
+              <input type="text" name="keyword" placeholder="Nhập tên sản phẩm" class="mx-auto bg-white-600 p-3 rounded-3xl w-[20vw]" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>" />
+              <button type="submit" class="me-8 text-xl bg-green-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">
+                <i class="fa-solid fa-search text-white"></i> Tìm
+              </button>
+            </form>
+            <form id="brandSearch" action="/admin/product/brand-search" method="GET">
+              <input type="text" name="keyword" placeholder="Nhập tên thương hiệu" class="mx-auto bg-white-600 p-3 rounded-3xl" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>" />
+              <button type="submit" class="me-8 text-xl bg-green-600 text-white font-semibold py-2 px-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.02]">
+                <i class="fa-solid fa-search text-white"></i> Tìm
+              </button>
+            </form>
+          </div>
+        </div>
+        <div>
+          <table class="w-[95%] text-center mx-auto mt-2">
+            <tr class="bg-gray-800 text-white">
+              <th class="py-3">STT</th>
+              <th class="py-3">Hình ảnh</th>
+              <th class="py-3">Tên sản phẩm</th>
+              <th class="py-3">Thương hiệu</th>
+              <th class="py-3">Màu sắc</th>
+              <th class="py-3">Đơn giá</th>
+              <th class="py-3">Số lượng</th>
+              <th class="py-3">Chức năng</th>
+            </tr>
+            <% products.forEach((product, index) => { %>
+            <tr class="bg-white hover:bg-gray-50 transition">
+              <td class="px-4 py-2"><%= ++index %></td>
+              <td class="px-4 py-2 w-[5vw]">
+                <img src="<%= product.picture %>" />
+              </td>
+              <td class="px-4 py-2"><%= product.name %></td>
+              <td class="px-4 py-2"><%= product.Brand.name %></td>
+              <td class="px-4 py-2"><%= product.color %></td>
+              <td class="px-4 py-2"><%= product.unitPrice.toLocaleString() %></td>
+              <td class="px-4 py-2"><%= product.quantity %></td>
+              <td class="flex justify-center py-2 mt-1 gap-4 items-center">
+                <button class="bg-sky-500 px-7 py-2 rounded-full show" data-id="<%= product.id %>"><i class="fas fa-eye"></i> Xem chi tiết</button>
+                <button class="bg-yellow-500 px-7 py-2 mt-1 rounded-full update" data-id="<%= product.id %>"><i class="fas fa-edit"></i> Sửa</button>
+                <button class="bg-red-500 px-7 py-2 mt-1 rounded-full delete" data-id="<%= product.id %>"><i class="fas fa-trash-can"></i> Xóa</button>
+              </td>
+            </tr>
+            <% }) %>
+          </table>
+        </div>
+        <div class="flex justify-center mt-6">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="mx-1 px-3 py-1 rounded-lg <%= currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white transition' %>">
+            <%= i %>
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <footer><%- include("./footer.ejs") %></footer>
+  </body>
+  <script>
+    document.getElementById('add').addEventListener('click', (e) => {
+      location.href = '/admin/product/new';
+    });
+    document.querySelectorAll('.show').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        let id = btn.dataset.id;
+        location.href = `/admin/product/${id}`;
+      });
+    });
+    document.querySelectorAll('.update').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        let id = btn.dataset.id;
+        location.href = `/admin/product/${id}/edit`;
+      });
+    });
+    document.querySelectorAll('.delete').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        const id = btn.dataset.id;
+        if (!confirm('Bạn có chắc muốn xóa không?')) return;
+        try {
+          const res = await fetch(`/admin/product/${id}`, {
+            method: 'DELETE',
+            credentials: 'same-origin',
+          });
+          if (res.ok) {
+            location.reload();
+          }
+        } catch (error) {
+          console.log(error);
+          document.getElementById('error').innerText = 'Không thể kết nối tới server';
+        }
+      });
+    });
+  </script>
+</html>

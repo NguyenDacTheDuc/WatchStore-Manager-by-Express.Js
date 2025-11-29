@@ -1,0 +1,103 @@
+<header class="bg-gray-200 text-black flex items-center flex-wrap">
+  <div class="flex items-center justify-between py-6 px-14 relative w-[75vw] mx-auto flex-wrap">
+    <p class="font-bold text-4xl hover: cursor-pointer" id="logo">SHOP.WS</p>
+    <div class="relative inline-block text-left z-10">
+      <button class="dropdownButton inline-flex items-center justify-center text-xl font-semibold">Thương hiệu</button>
+      <div class="dropdownMenu hidden absolute bg-white right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div class="py-1">
+          <% brands.forEach((brand)=>{ %>
+          <a href="/brand/<%= brand.id %>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= brand.name %></a>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+    <div class="relative inline-block text-left z-10">
+      <button class="dropdownButton inline-flex items-center justify-center text-xl font-semibold">Thể loại</button>
+      <div class="dropdownMenu hidden absolute bg-white right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div class="py-1">
+          <% categories.forEach((category)=>{ %>
+          <a href="/category/<%= category.id%>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= category.name %></a>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+    <div class="relative inline-block text-left z-10">
+      <button class="dropdownButton inline-flex items-center justify-center text-xl font-semibold">Chất liệu</button>
+      <div class="dropdownMenu hidden absolute bg-white right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div class="py-1">
+          <% materials.forEach((material)=>{ %>
+          <a href="/material/<%= material.id %>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= material.name %></a>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+    <div class="relative inline-block text-left z-10">
+      <button class="dropdownButton inline-flex items-center justify-center text-xl font-semibold">Xuất xứ</button>
+      <div class="dropdownMenu bg-white hidden absolute right-0 mt-2 w-[7vw] origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div class="py-1">
+          <% origins.forEach((origin)=>{ %>
+          <a href="/origin/<%= origin.id %>" class="block px-4 py-2 text-md text-center hover:bg-gray-700 hover:text-white"><%= origin.name %></a>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-1 items-center gap-10 justify-center">
+    <div class="font-semibold text-2xl">
+      <a href="/<%= customer.id %>/cart">Giỏ hàng <i class="fa-solid fa-cart-shopping"></i></a>
+    </div>
+    <div class="relative inline-block text-left">
+      <button id="userDropdownBtn" class="focus:outline-none">
+        <i class="text-5xl fa-regular fa-circle-user"></i>
+      </button>
+      <div id="userDropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+        <div class="py-1">
+          <a href="/<%= customer.id %>/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-700 hover:text-white">Xem hồ sơ</a>
+          <a href="/order/<%= customer.id %>" class="block px-4 py-2 text-gray-700 hover:bg-gray-700 hover:text-white">Đơn hàng</a>
+          <a href="/<%= customer.id %>/change-password" class="block px-4 py-2 text-gray-700 hover:bg-gray-700 hover:text-white">Đổi mật khẩu</a>
+          <hr />
+          <button id="logout" class="w-full text-left px-4 py-2 text-red-500 hover:text-white hover:bg-red-500">Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.getElementById('logo').addEventListener('click', () => {
+    window.location.href = '/home';
+  });
+  const dropdownButtons = document.querySelectorAll('.dropdownButton');
+  dropdownButtons.forEach((btn) => {
+    const menu = btn.nextElementSibling;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('hidden');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdownMenu').forEach((menu) => menu.classList.add('hidden'));
+  });
+  const userBtn = document.getElementById('userDropdownBtn');
+  const userMenu = document.getElementById('userDropdownMenu');
+
+  userBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userMenu.classList.toggle('hidden');
+    document.querySelectorAll('.dropdownMenu').forEach((menu) => {
+      if (menu !== userMenu) menu.classList.add('hidden');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    userMenu.classList.add('hidden');
+  });
+  document.getElementById('logout').addEventListener('click', async (e) => {
+    const res = await fetch('/logout', { method: 'POST' });
+    const result = await res.json();
+    if (res.ok) {
+      location.href = result.url;
+    }
+  });
+</script>
