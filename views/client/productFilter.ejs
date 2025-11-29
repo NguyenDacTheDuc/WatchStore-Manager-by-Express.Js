@@ -49,10 +49,17 @@
           <div class="bg-white rounded-lg border overflow-hidden hover:shadow-xl transition-shadow duration-300">
             <img src="<%= product.picture %>" class="w-full h-64 object-cover" />
             <div class="p-4">
-              <h3 class="text-lg font-semibold mb-2"><%= product.name %></h3>
-              <p class="text-gray-600 mb-4"><%= product.Brand.name %></p>
-              <p class="text-blue-600 font-bold text-xl"><%= product.unitPrice.toLocaleString() %> VND</p>
-              <a href="/product/<%= product.id %>" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Xem Chi Tiết</a>
+              <p class="text-xl font-bold mb-2"><%= product.name %></p>
+              <div class="flex gap-5">
+                <p class="text-gray-600 font-semibold text-lg mb-4">Thương hiệu: <%= product.Brand.name %></p>
+                <p class="text-green-600 font-bold text-xl"><%= product.unitPrice.toLocaleString() %> VND</p>
+              </div>
+              <div class="flex justify-between mt-4 font-semibold">
+                <a href="/home/product/<%= product.id %>" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Xem Chi Tiết</a>
+                <button data-id="<%= product.id %>" class="cart inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+                  <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng
+                </button>
+              </div>
             </div>
           </div>
           <% }) %>
@@ -68,5 +75,28 @@
     </main>
     <footer><%- include("./footer.ejs") %></footer>
   </body>
-  <script></script>
+  <script>
+    let btn = document.querySelector('.cart');
+    btn.addEventListener('click', async () => {
+      const productId = btn.dataset.id;
+      const customerId = '<%= customer.id %>';
+      try {
+        const res = await fetch('/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId, customerId }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          alert('Đã thêm sản phẩm vào giỏ hàng!');
+        } else {
+          alert('Thêm sản phẩm vào giỏ hàng thất bại: ' + result.error);
+        }
+      } catch (error) {
+        alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+      }
+    });
+  </script>
 </html>

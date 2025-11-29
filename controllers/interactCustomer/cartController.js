@@ -19,7 +19,7 @@ export const cartController = {
         where: { productId, customerId },
       });
       if (cart) {
-        cart.quantity += 1;
+        cart.quantity += quantity;
         await cart.save();
       } else {
         await Cart.create({ productId, customerId, quantity });

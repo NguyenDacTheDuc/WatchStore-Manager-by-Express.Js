@@ -42,7 +42,7 @@
             <div class="mb-2 h-7">
               <p class="font-semibold text-xl"></p>
             </div>
-            <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng</button>
+            <button data-id="<%= product.id %>" class="cart bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng</button>
           </div>
         </div>
         <div class="mt-7 space-y-3">
@@ -65,6 +65,30 @@
     minusBtn.addEventListener('click', () => {
       if (Number(quantityInput.value) > 1) {
         quantityInput.value = Number(quantityInput.value) - 1;
+      }
+    });
+
+    let btn = document.querySelector('.cart');
+    btn.addEventListener('click', async () => {
+      const productId = btn.dataset.id;
+      const customerId = '<%= customer.id %>';
+      const quantity = Number(quantityInput.value);
+      try {
+        const res = await fetch('/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId, customerId, quantity }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          alert('Đã thêm sản phẩm vào giỏ hàng!');
+        } else {
+          alert('Thêm sản phẩm vào giỏ hàng thất bại: ' + result.error);
+        }
+      } catch (error) {
+        alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
       }
     });
   </script>
